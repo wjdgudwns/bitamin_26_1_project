@@ -1618,7 +1618,6 @@ def render_entry_screen():
     st.markdown(
         f"""
         <div class="entry-hero">
-            <div class="entry-hero-bg" style="background-image:url('{studio_src}')"></div>
             <div class="entry-overlay"></div>
             <div class="entry-inner">
                 <div class="entry-kicker">💘 Signal House — Season 1</div>
@@ -2034,10 +2033,6 @@ st.markdown(
                     </div>
                 </div>
             </div>
-            <div class="hero-photo-wrap">
-                <img src="{studio_src}" alt="Signal House">
-                <div class="hero-photo-tag">SIGNAL HOUSE</div>
-            </div>
         </div>
     </div>
     """,
@@ -2291,8 +2286,15 @@ if st.session_state.submitted and st.session_state.user_weights is not None:
                                     topMargin=20*mm, bottomMargin=20*mm)
 
             # 한글 폰트 등록 시도
+            import urllib.request
             try:
-                pdfmetrics.registerFont(TTFont("NanumGothic", "NanumGothic.ttf"))
+                font_path = "/tmp/NanumGothic.ttf"
+                if not os.path.exists(font_path):
+                    urllib.request.urlretrieve(
+                        "https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Regular.ttf",
+                        font_path
+                    )
+                pdfmetrics.registerFont(TTFont("NanumGothic", font_path))
                 font_name = "NanumGothic"
             except Exception:
                 font_name = "Helvetica"
